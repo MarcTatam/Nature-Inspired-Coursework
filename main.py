@@ -1,4 +1,5 @@
 from random import random
+import matplotlib.pyplot as plt
 from Bin_file import Bin
 from Node import Node
 
@@ -9,37 +10,49 @@ def aco(bins: int, items:[int], ants:int, evaporation_rate:float):
     bins - an int representing the number of bins
     items - list of integers with each integer representing the weight of the item
     """
+    epochs = int(10000/ants)+1
     nodes = generate_nodes(bins,len(items))
     paths = []
     fitnesses = []
-    for i in range(ants):
-        bin_list = []
-        for j in range(bins):
-            bin_list.append(Bin())
-        path = []
-        node = nodes[0]
-        while node.item_no < len(items):
-            total = sum(node.pheromones)
-            sumto = 0
-            choice = random()
-            for j in range(len(node.connections)):
-                if choice <= sumto + node.pheromones[j]/total and sumto <= choice:
-                    node = node.connections[j]
-                    path.append(node.bin_no)
-                    print(path)
-                    bin_list[node.bin_no-1].add_item(items[node.item_no-1])
-                    break
-                else:
-                    sumto += node.pheromones[j]/total
-        node = nodes[0]
-        fitness = max(bin_list).weight-min(bin_list).weight
-        fitnesses.append(100/fitness)
-        paths.append(path)
-        for route in path:
-            node.pheromones[route - 1] += 100/fitness
+    actual_fitnesses = []
+    for epoch in range(epochs):
+        epoch_paths = []
+        epoch_fitnesses = []
+        for i in range(ants):
+            bin_list = []
+            for j in range(bins):
+                bin_list.append(Bin())
+            path = []
+            node = nodes[0]
+            while node.item_no < len(items):
+                total = sum(node.pheromones)
+                sumto = 0
+                choice = random()
+                for j in range(len(node.connections)):
+                    if choice <= sumto + node.pheromones[j]/total and sumto <= choice:
+                        node = node.connections[j]
+                        path.append(node.bin_no)
+                        bin_list[node.bin_no-1].add_item(items[node.item_no-1])
+                        break
+                    else:
+                        sumto += node.pheromones[j]/total
+            fitness = max(bin_list).weight-min(bin_list).weight
+            actual_fitnesses.append(fitness)
+            epoch_fitnesses.append(100/fitness)
+            epoch_paths.append(path)
+        for path_ind in range(len(epoch_paths)):
+            node = nodes[0]
+            path = epoch_paths[path_ind]
+            fitness = epoch_fitnesses[path_ind]
+            for route in path:
+                node.pheromones[route - 1] += fitness
+                node = node.connections[route - 1]
         for node in nodes:
             for route_ind in range(len(node.pheromones)):
                 node.pheromones[route_ind] *= evaporation_rate
+        fitnesses = fitnesses + epoch_fitnesses
+        paths = paths + epoch_paths
+    return fitnesses, actual_fitnesses
 
     
 def generate_nodes(bins: int, items: int):
@@ -68,4 +81,13 @@ def generate_nodes(bins: int, items: int):
 
 
 if __name__ == "__main__":
-    print(aco(3,[4,5,6,7,8,9,2,3,4,5],10,0.9))
+    i = []
+    for j in range(1, 501):
+        i.append(j)
+    fitnesses, actual_fitnesses = aco(10,i,10,0.5)
+    print(max(actual_fitnesses))
+    #x= []
+    #for i in range(len(fitnesses)):
+    #    x.append(i)
+    #fig, ax = plt.subplots()
+    #ax.plot(x,fitnesses)

@@ -13,10 +13,10 @@ class Bin(object):
         return self.contents == value.contents
 
     def __lt__(self, value):
-        return self.weight > value.weight
+        return self.weight < value.weight
 
     def __gt__(self, value):
-        return self.weight < value.weight
+        return self.weight > value.weight
 
     def add_item(self, item):
         self.contents.append(item)
