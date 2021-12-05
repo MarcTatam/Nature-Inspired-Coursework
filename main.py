@@ -10,12 +10,13 @@ def aco(bins: int, items:[int], ants:int, evaporation_rate:float):
     bins - an int representing the number of bins
     items - list of integers with each integer representing the weight of the item
     """
-    epochs = int(10000/ants)+1
+    epochs = int(10000/ants)
     nodes = generate_nodes(bins,len(items))
     paths = []
     fitnesses = []
     actual_fitnesses = []
     for epoch in range(epochs):
+        print(epoch)
         epoch_paths = []
         epoch_fitnesses = []
         for i in range(ants):
@@ -81,11 +82,29 @@ def generate_nodes(bins: int, items: int):
 
 
 if __name__ == "__main__":
-    i = []
+    items = []
+    xs = []
+    fitness_chart = []
     for j in range(1, 501):
-        i.append(j)
-    fitnesses, actual_fitnesses = aco(10,i,10,0.5)
-    print(max(actual_fitnesses))
+        items.append(j**2)
+    x = []
+    fitnesses, actual_fitnesses = aco(50,items,10,0.9)
+    print(min(actual_fitnesses))
+    #for i in range(len(fitnesses)):
+        #x.append(i)
+    #xs.append(x)
+    #fitness_chart.append(actual_fitnesses)
+    #fig, ax = plt.subplots()
+    #plt1 = ax.plot(xs[0], fitness_chart[0], c = "red")
+    #plt2 = ax.plot(xs[1], fitness_chart[1], c = "orange")
+    #plt3 = ax.plot(xs[2], fitness_chart[2], c = "darkolivegreen")
+    #plt4 = ax.plot(xs[3], fitness_chart[3], c = "cyan")
+    #plt5 = ax.plot(xs[4], fitness_chart[4], c = "fuchsia")
+    #ax.set_xlabel('Path Number', fontsize=15)
+    #ax.set_ylabel('Fitness', fontsize=15)
+    #ax.legend([plt1, plt2, plt3, plt4, plt5], ["Run 1", "Run 2","Run 3","Run 4","Run 5"])
+    #plt.show()
+
     #x= []
     #for i in range(len(fitnesses)):
     #    x.append(i)

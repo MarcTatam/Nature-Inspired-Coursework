@@ -4,10 +4,10 @@ class Bin(object):
         self.weight = 0
 
     def __str__(self):
-        return str(self.weight) + " : " + str(self.contents)
+        return str(self.weight) + " : " + str(len(self.contents))
 
     def __repr__(self):
-        return str(self.weight) + " : " + str(self.contents)
+        return str(self.weight) + " : " + str(len(self.contents))
 
     def __eq__(self, value):
         return self.contents == value.contents
