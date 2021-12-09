@@ -28,6 +28,7 @@ def bpp2():
     plt.show()
 
 def bpp1_er():
+    """Graphs how fitness changes as the evaporation rate changes with BPP1"""
     items = []
     xs = []
     ys = []
@@ -46,7 +47,8 @@ def bpp1_er():
     ax.set_title("BPP1")
     plt.show()
 
-def bpp1_er():
+def bpp2_er():
+    """Graphs how fitness changes as the evaporation rate changes with BPP2"""
     items = []
     xs = []
     ys = []
@@ -67,4 +69,4 @@ def bpp1_er():
 
 
 if __name__ == "__main__":
-    bpp1_er()
+    bpp2_er()
